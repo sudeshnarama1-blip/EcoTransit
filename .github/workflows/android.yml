@@ -1,0 +1,62 @@
+# Builds the EcoTransit Android app (APK) and publishes it as a download
+# on the repo's Releases page: .../releases/latest/download/EcoTransit.apk
+# The app opens the live site, so it only needs rebuilding when the app
+# icon, name or site address changes.
+name: Build Android app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "mobile/**"
+      - ".github/workflows/android.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Add Capacitor and create the Android project
+        run: |
+          npm install --no-save @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets
+          npx cap add android
+          npx capacitor-assets generate --android --iconBackgroundColor '#051F20' --splashBackgroundColor '#051F20'
+          npx cap sync android
+
+      - name: Build the APK
+        working-directory: mobile/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cp app/build/outputs/apk/debug/app-debug.apk ../../EcoTransit.apk
+
+      - name: Publish the APK on the Releases page
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete android-app --yes --cleanup-tag || true
+          gh release create android-app EcoTransit.apk \
+            --title "EcoTransit Android app" \
+            --notes "Download EcoTransit.apk on an Android phone and open it to install. You may need to allow installing apps from your browser. The app needs internet, and the first launch can take up to a minute while the server wakes up."

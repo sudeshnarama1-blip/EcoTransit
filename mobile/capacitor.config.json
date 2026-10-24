@@ -1,0 +1,13 @@
+{
+  "appId": "com.ramasudeshna.ecotransit",
+  "appName": "EcoTransit",
+  "webDir": "www",
+  "backgroundColor": "#051F20",
+  "server": {
+    "url": "https://ecotransit-zax7.onrender.com",
+    "cleartext": false
+  },
+  "android": {
+    "backgroundColor": "#051F20"
+  }
+}

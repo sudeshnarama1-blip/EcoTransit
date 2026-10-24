@@ -1,0 +1,6 @@
+{
+  "name": "ecotransit-android",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Android app for EcoTransit. Opens the live site in a native app shell."
+}
