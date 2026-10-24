@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>EcoTransit</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -78,7 +86,7 @@
             "COUNT(*) AS total_rides, " +
             "COALESCE(SUM(distance_km), 0) AS total_distance, " +
             "COALESCE(SUM(co2_saved_kg), 0) AS total_co2 " +
-            "FROM Bookings " +
+            "FROM bookings " +
             "WHERE booking_status = 'Confirmed'";
 
 
@@ -110,7 +118,7 @@
         String studentSql =
             "SELECT COUNT(DISTINCT student_id) " +
             "AS participating_students " +
-            "FROM Bookings " +
+            "FROM bookings " +
             "WHERE booking_status = 'Confirmed'";
 
 
@@ -137,8 +145,8 @@
 
         String zeroSql =
             "SELECT COUNT(*) AS zero_rides " +
-            "FROM Bookings b " +
-            "JOIN Vehicles_Slots v " +
+            "FROM bookings b " +
+            "JOIN vehicles_slots v " +
             "ON b.slot_id = v.slot_id " +
             "WHERE v.zero_emission = TRUE " +
             "AND b.booking_status = 'Confirmed'";
@@ -165,7 +173,7 @@
 
         String sharedSql =
             "SELECT COUNT(*) AS shared_journeys " +
-            "FROM Ride_Participants " +
+            "FROM ride_participants " +
             "WHERE student_id = ? " +
             "AND participant_status = 'Joined'";
 
@@ -199,8 +207,8 @@
             "v.slot_time, " +
             "b.distance_km, " +
             "b.co2_saved_kg " +
-            "FROM Bookings b " +
-            "JOIN Vehicles_Slots v " +
+            "FROM bookings b " +
+            "JOIN vehicles_slots v " +
             "ON b.slot_id = v.slot_id " +
             "WHERE b.student_id = ? " +
             "AND b.booking_status = 'Confirmed' " +
@@ -382,7 +390,7 @@
                 Ride Time:
             </strong>
 
-            <%= previousTime %>
+            <%= previousTime == null ? "" : new java.text.SimpleDateFormat("hh:mm a").format(previousTime) %>
         </p>
 
 
@@ -571,6 +579,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>CO2 Savings Leaderboard</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -32,7 +40,7 @@
 
         String sql =
             "SELECT name, email, total_co2_saved_kg " +
-            "FROM Students " +
+            "FROM students " +
             "ORDER BY total_co2_saved_kg DESC";
 
         PreparedStatement stmt =
@@ -101,5 +109,12 @@
 </a>
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 </html>

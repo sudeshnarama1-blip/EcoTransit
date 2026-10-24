@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>Schedule Confirmation</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -140,7 +148,7 @@
             "vehicle_type, " +
             "fuel_type, " +
             "route " +
-            "FROM Vehicles_Slots " +
+            "FROM vehicles_slots " +
             "WHERE slot_id = ? " +
             "AND vehicle_status = 'Available'";
 
@@ -399,6 +407,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

@@ -7,7 +7,7 @@
     try {
         Connection con = com.greenmobility.DBConnection.getConnection();
 
-        String checkSql = "SELECT student_id FROM Students WHERE email = ?";
+        String checkSql = "SELECT student_id FROM students WHERE email = ?";
         PreparedStatement checkStmt = con.prepareStatement(checkSql);
         checkStmt.setString(1, email);
 
@@ -22,7 +22,7 @@
         } else {
 
             String insertSql =
-                "INSERT INTO Students (name, email) VALUES (?, ?)";
+                "INSERT INTO students (name, email) VALUES (?, ?)";
 
             PreparedStatement insertStmt =
                 con.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);

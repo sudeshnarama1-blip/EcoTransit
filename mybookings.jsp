@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>My Bookings</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -72,8 +80,8 @@
             "b.distance_km, " +
             "b.co2_saved_kg, " +
             "b.booked_at " +
-            "FROM Bookings b " +
-            "JOIN Vehicles_Slots v " +
+            "FROM bookings b " +
+            "JOIN vehicles_slots v " +
             "ON b.slot_id = v.slot_id " +
             "WHERE b.student_id = ? " +
             "ORDER BY b.booked_at DESC";
@@ -147,7 +155,7 @@
 
     <p>
         <strong>Ride Time:</strong>
-        <%= slotTime %>
+        <%= slotTime == null ? "" : new java.text.SimpleDateFormat("hh:mm a").format(slotTime) %>
     </p>
 
     <p>
@@ -253,7 +261,7 @@
 
         String totalSql =
             "SELECT total_co2_saved_kg " +
-            "FROM Students " +
+            "FROM students " +
             "WHERE student_id = ?";
 
 
@@ -329,6 +337,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

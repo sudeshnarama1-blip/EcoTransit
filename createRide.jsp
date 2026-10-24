@@ -6,6 +6,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>Create Shared Ride</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -69,7 +77,7 @@
                 com.greenmobility.DBConnection.getConnection();
 
             String sql =
-                "SELECT * FROM Vehicles_Slots " +
+                "SELECT * FROM vehicles_slots " +
                 "WHERE vehicle_status = 'Available' " +
                 "AND booked_count < capacity " +
                 "ORDER BY slot_time";
@@ -122,7 +130,7 @@
 
         <p>
             <strong>Departure:</strong>
-            <%= time %>
+            <%= time == null ? "" : new java.text.SimpleDateFormat("hh:mm a").format(time) %>
         </p>
 
         <p>
@@ -185,7 +193,7 @@
                 "fuel_type, route, slot_time, " +
                 "distance_km, co2_per_km, " +
                 "zero_emission " +
-                "FROM Vehicles_Slots " +
+                "FROM vehicles_slots " +
                 "WHERE slot_id = ? " +
                 "AND vehicle_status = 'Available'";
 
@@ -289,7 +297,7 @@
 
             String existingBookingSql =
                 "SELECT booking_id " +
-                "FROM Bookings " +
+                "FROM bookings " +
                 "WHERE student_id = ? " +
                 "AND slot_id = ?";
 
@@ -363,7 +371,7 @@
 
 
             String insertRide =
-                "INSERT INTO Ride_Groups " +
+                "INSERT INTO ride_groups " +
                 "(slot_id, created_by, share_code) " +
                 "VALUES (?, ?, ?)";
 
@@ -397,7 +405,7 @@
 
 
             String participantSql =
-                "INSERT INTO Ride_Participants " +
+                "INSERT INTO ride_participants " +
                 "(ride_group_id, student_id) " +
                 "VALUES (?, ?)";
 
@@ -413,7 +421,7 @@
 
 
             String bookingSql =
-                "INSERT INTO Bookings " +
+                "INSERT INTO bookings " +
                 "(student_id, slot_id, " +
                 "distance_km, co2_saved_kg, " +
                 "ride_group_id) " +
@@ -434,7 +442,7 @@
 
 
             String updateSlot =
-                "UPDATE Vehicles_Slots " +
+                "UPDATE vehicles_slots " +
                 "SET booked_count = booked_count + 1 " +
                 "WHERE slot_id = ?";
 
@@ -449,7 +457,7 @@
 
 
             String updateStudent =
-                "UPDATE Students " +
+                "UPDATE students " +
                 "SET total_co2_saved_kg = " +
                 "total_co2_saved_kg + ? " +
                 "WHERE student_id = ?";
@@ -507,7 +515,7 @@
 
         <p>
             <strong>Departure:</strong>
-            <%= time %>
+            <%= time == null ? "" : new java.text.SimpleDateFormat("hh:mm a").format(time) %>
         </p>
 
         <p>
@@ -592,6 +600,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

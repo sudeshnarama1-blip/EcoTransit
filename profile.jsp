@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>My Profile</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -64,8 +72,8 @@
             "s.total_co2_saved_kg, " +
             "COUNT(b.booking_id) AS total_rides, " +
             "COALESCE(SUM(b.distance_km), 0) AS total_distance " +
-            "FROM Students s " +
-            "LEFT JOIN Bookings b " +
+            "FROM students s " +
+            "LEFT JOIN bookings b " +
             "ON s.student_id = b.student_id " +
             "AND b.booking_status = 'Confirmed' " +
             "WHERE s.student_id = ? " +
@@ -385,7 +393,7 @@
             "v.fuel_type, " +
             "v.route " +
             "FROM scheduled_rides sr " +
-            "JOIN Vehicles_Slots v " +
+            "JOIN vehicles_slots v " +
             "ON sr.slot_id = v.slot_id " +
             "WHERE sr.student_id = ? " +
             "AND sr.booking_status = 'Upcoming' " +
@@ -685,6 +693,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
 
     <title>Your Impact</title>
 
@@ -106,7 +114,7 @@
             "COALESCE(SUM(co2_saved_kg), 0) " +
             "AS total_co2 " +
 
-            "FROM Bookings " +
+            "FROM bookings " +
 
             "WHERE student_id = ? " +
 
@@ -154,7 +162,7 @@
             "COALESCE(SUM(co2_saved_kg), 0) " +
             "AS co2 " +
 
-            "FROM Bookings " +
+            "FROM bookings " +
 
             "WHERE student_id = ? " +
 
@@ -204,7 +212,7 @@
             "COALESCE(SUM(co2_saved_kg), 0) " +
             "AS co2 " +
 
-            "FROM Bookings " +
+            "FROM bookings " +
 
             "WHERE student_id = ? " +
 
@@ -256,7 +264,7 @@
             "COALESCE(SUM(co2_saved_kg), 0) " +
             "AS co2 " +
 
-            "FROM Bookings " +
+            "FROM bookings " +
 
             "WHERE student_id = ? " +
 
@@ -557,9 +565,9 @@
 
             "v.route " +
 
-            "FROM Bookings b " +
+            "FROM bookings b " +
 
-            "JOIN Vehicles_Slots v " +
+            "JOIN vehicles_slots v " +
 
             "ON b.slot_id = v.slot_id " +
 
@@ -791,6 +799,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

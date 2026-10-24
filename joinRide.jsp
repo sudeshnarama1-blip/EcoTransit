@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>Join Shared Ride</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -100,8 +108,8 @@
             "v.slot_time, " +
             "v.capacity, " +
             "v.booked_count " +
-            "FROM Ride_Groups r " +
-            "JOIN Vehicles_Slots v " +
+            "FROM ride_groups r " +
+            "JOIN vehicles_slots v " +
             "ON r.slot_id = v.slot_id " +
             "WHERE r.share_code = ? " +
             "AND r.ride_status = 'Active'";
@@ -187,7 +195,7 @@
 
         String participantCheck =
             "SELECT participant_id, participant_status " +
-            "FROM Ride_Participants " +
+            "FROM ride_participants " +
             "WHERE ride_group_id = ? " +
             "AND student_id = ?";
 
@@ -289,7 +297,7 @@
          */
 
         String insertParticipant =
-            "INSERT INTO Ride_Participants " +
+            "INSERT INTO ride_participants " +
             "(ride_group_id, student_id) " +
             "VALUES (?, ?)";
 
@@ -313,7 +321,7 @@
          */
 
         String updateSlot =
-            "UPDATE Vehicles_Slots " +
+            "UPDATE vehicles_slots " +
             "SET booked_count = booked_count + 1 " +
             "WHERE slot_id = ?";
 
@@ -369,7 +377,7 @@
 
         <p>
             <strong>Departure:</strong>
-            <%= time %>
+            <%= time == null ? "" : new java.text.SimpleDateFormat("hh:mm a").format(time) %>
         </p>
 
         <hr>
@@ -432,6 +440,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

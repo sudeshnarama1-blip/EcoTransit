@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>Cancel Ride</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -69,7 +77,7 @@
             "b.ride_group_id, " +
             "b.co2_saved_kg, " +
             "b.booking_status " +
-            "FROM Bookings b " +
+            "FROM bookings b " +
             "WHERE b.booking_id = ? " +
             "AND b.student_id = ? " +
             "FOR UPDATE";
@@ -189,7 +197,7 @@
 
         String participantSql =
             "SELECT participant_id, participant_status " +
-            "FROM Ride_Participants " +
+            "FROM ride_participants " +
             "WHERE ride_group_id = ? " +
             "AND student_id = ? " +
             "FOR UPDATE";
@@ -276,7 +284,7 @@
 
 
         String updateParticipant =
-            "UPDATE Ride_Participants " +
+            "UPDATE ride_participants " +
             "SET participant_status = 'Cancelled' " +
             "WHERE participant_id = ?";
 
@@ -292,7 +300,7 @@
 
 
         String updateBooking =
-            "UPDATE Bookings " +
+            "UPDATE bookings " +
             "SET booking_status = 'Cancelled' " +
             "WHERE booking_id = ?";
 
@@ -308,7 +316,7 @@
 
 
         String updateSlot =
-            "UPDATE Vehicles_Slots " +
+            "UPDATE vehicles_slots " +
             "SET booked_count = " +
             "CASE " +
             "WHEN booked_count > 0 " +
@@ -329,7 +337,7 @@
 
 
         String updateStudent =
-            "UPDATE Students " +
+            "UPDATE students " +
             "SET total_co2_saved_kg = " +
             "CASE " +
             "WHEN total_co2_saved_kg >= ? " +
@@ -459,6 +467,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>

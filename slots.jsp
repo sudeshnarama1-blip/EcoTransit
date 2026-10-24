@@ -5,6 +5,14 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#051F20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EcoTransit">
     <title>Available Transport</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -107,7 +115,7 @@
 
 
         String sql =
-            "SELECT * FROM Vehicles_Slots " +
+            "SELECT * FROM vehicles_slots " +
             "WHERE LOWER(route) = LOWER(?) " +
             "AND vehicle_status = 'Available' " +
             "AND booked_count < capacity " +
@@ -210,7 +218,7 @@
 
         <br>
 
-        <%= time %>
+        <%= time == null ? "" : new java.text.SimpleDateFormat("hh:mm a").format(time) %>
 
     </p>
 
@@ -352,6 +360,13 @@
 
 </div>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+            navigator.serviceWorker.register("sw.js");
+        });
+    }
+</script>
 </body>
 
 </html>
