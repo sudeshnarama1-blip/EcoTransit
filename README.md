@@ -5,6 +5,7 @@
 EcoTransit is a campus mobility web app that helps students find low-emission transport, share rides with others on the same route, and see how much CO₂ their choices save. It can also be installed on a phone like an app.
 
 🔗 **Live app:** https://ecotransit-zax7.onrender.com (free hosting: the first load can take up to a minute)
+📱 **Android app:** [Download EcoTransit.apk](https://github.com/sudeshnarama1-blip/EcoTransit/releases/latest/download/EcoTransit.apk)
 
 ---
 
@@ -29,7 +30,7 @@ Transport is a major source of fuel use, congestion and carbon emissions in Indi
 | Frontend | JSP, HTML, CSS (responsive, mobile-first) |
 | Backend | Java (JSP on Apache Tomcat 9) |
 | Database | MySQL (JDBC with prepared statements) |
-| App layer | Web App Manifest + Service Worker (PWA) |
+| App layer | Web App Manifest + Service Worker (PWA), Android app with Capacitor |
 | Hosting | Docker on Render, MySQL on Aiven |
 
 ## How CO₂ savings are calculated
