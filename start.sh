@@ -15,13 +15,17 @@ if [ -n "$DB_URL" ]; then
     export MYSQL_PWD="$DB_PASSWORD"
     db="mysql -h $host -P $port -u ${DB_USER:-root} --ssl-mode=REQUIRED $dbname"
 
-    tables=$($db -N -e "SHOW TABLES LIKE 'students'" 2>/dev/null || echo "error")
-    if [ "$tables" = "error" ]; then
+    echo "EcoTransit: connecting to database $dbname at $host port $port as ${DB_USER:-root}"
+    if ! tables=$($db -N -e "SHOW TABLES LIKE 'students'" 2>/tmp/db_error); then
         echo "EcoTransit: could not reach the database. Check DB_URL, DB_USER and DB_PASSWORD."
+        echo "EcoTransit: database error was: $(cat /tmp/db_error)"
     elif [ -z "$tables" ]; then
         echo "EcoTransit: empty database found, loading demo data..."
-        $db < /opt/ecotransit/ecotransit_database.sql
-        echo "EcoTransit: demo data loaded."
+        if $db < /opt/ecotransit/ecotransit_database.sql 2>/tmp/db_error; then
+            echo "EcoTransit: demo data loaded."
+        else
+            echo "EcoTransit: loading demo data failed: $(cat /tmp/db_error)"
+        fi
     else
         echo "EcoTransit: database already set up."
     fi
@@ -29,5 +33,6 @@ if [ -n "$DB_URL" ]; then
 fi
 
 # Render tells the app which port to use through $PORT.
-sed -i "s/port=\"8080\"/port=\"${PORT:-8080}\"/" /usr/local/tomcat/conf/server.xml
+# Turn off Tomcat's shutdown port so the host only sees the website port.
+sed -i "s/port=\"8080\"/port=\"${PORT:-8080}\"/; s/<Server port=\"8005\"/<Server port=\"-1\"/" /usr/local/tomcat/conf/server.xml
 exec catalina.sh run
