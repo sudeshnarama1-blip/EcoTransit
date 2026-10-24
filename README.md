@@ -4,8 +4,7 @@
 
 EcoTransit is a campus mobility web app that helps students find low-emission transport, share rides with others on the same route, and see how much CO₂ their choices save. It can also be installed on a phone like an app.
 
-🔗 **Live app:** _link coming soon_
-🎥 **2-minute demo:** _link coming soon_
+🔗 **Live app:** https://ecotransit-zax7.onrender.com (free hosting: the first load can take up to a minute)
 
 ---
 
